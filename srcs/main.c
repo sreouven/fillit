@@ -24,22 +24,27 @@ int		open_file(char **argv, char *buf)
 }
 
 /*
-   CHECK_CHAR verifie l'integrite du buffer au niveau des char . # \n
+   CHECK_CHAR verifie l'integrite du buffer au niveau des char . # \n et %4#
 0: erreur, 1: reussite
  */
 int		check_char(char *buf, int size_buf)
 {
+		int		nbh;
+
+		nbh = 0;
 		while(*buf)
 		{
 				if (*buf != '.' && *buf != '#' && *buf != '\n')
 						return (0);
-				buf++;
+				if (*buf == '#')
+						nbh++;
+				buf++;															//pas forcement neilleur endroit
 		}
-		return (1);
+		return ((nbh % 4 == 0) ? 1 : 0);
 }
 
 /*
-   CHECK_FORMAT verifie le format du fichier
+   CHECK_FORMAT verifie le format du fichier : bloc de 4.\n et \n
  */
 int		check_format(char *buf, int	size_buf)
 {
@@ -86,24 +91,89 @@ int		ft_open_check_file(char **argv)
 				return (0);
 		if (!(check_format(buf, len_buffer)))
 				return(0);
-		ft_putstr(buf); // debug
+		ft_putstr(buf); 																			// debug
 		return (1);
 }
+
+/*************************************************************************************************************/
+int		check_piece(char **tetri)  // ne gere pas 5 cas
+{
+		int		i;
+		int		j;
+		int		nbh;
+		int		ok;
+
+		nbh = 0;
+		ok = 0;
+		j = 0;
+		while (j < 3)
+		{
+				i = 0;
+				while (i < 3)
+				{
+						if (tetri[j][i] == '#')
+						{
+								nbh++;
+								if ((tetri[j][i + 1] == '#') || (tetri[j + 1][i] == '#'))
+										ok++;
+						}
+						i++;
+				}
+				j++;
+		}
+		return ((nbh == 4 && ok == 3) ? 1 : 0);
+}
+
+t_tetri		add_piece(t_tetri *piece, char *block, int ipiece)
+{
+		t_tetri		*newpiece;
+
+		if(!(newpiece = malloc(sizeof(t_tetri))))
+				return (NULL);
+		newpiece->block = block;
+		newpiece->index = ipiece;
+
+}
+
+t_tetri		*fill_list(char *buffer, int sizebuf)
+{
+		t_tetri		*piece;
+		int			ipiece;
+		int			max;
+
+		ipiece = 0;
+		piece = NULL;
+		max = (sizebuf / 21 + 1);
+		while (ipiece < max)
+		{
+			add_piece(piece, ft_strsub(buffer -= 20, 20), (max - 1));
+			check_piece();
+			buffer--;
+			ipiece++;
+		}
+		return (ptr_list);
+}
+/*************************************************************************************************************/
+/* backtracking + print_resulst */
+/*************************************************************************************************************/
 
 /*
    MESSAGE ERREUR
  */
 void	ft_error(void)
 {
-		ft_putendl_fd("error", 2);
+		write(2, "error\n", 6);
 }
+
+/***************** MAIN ************************************/
 
 int		main(int argc, char **argv)
 {
+		t_tetri		*ptr_list;
 
 		if (argc != 2)
 		{
-				ft_putendl_fd("usage : ./fillit file.fillit", 2);
+				write(2, "usage : ./fillit file_name\n", 27);
 				return (1);
 		}
 		if (!(ft_open_check_file(&argv[1])))
@@ -111,5 +181,6 @@ int		main(int argc, char **argv)
 				ft_error();
 				return (1);
 		}
+		ptr_list = fill_list(
 		return (0);
 }
