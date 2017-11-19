@@ -6,6 +6,7 @@ CC = gcc
 
 SRC_C = 	main.c \
 			ft_putstr.c \
+			ft_strcpy.c \
 			ft_putendl_fd.c \
 			ft_strlen.c
 
