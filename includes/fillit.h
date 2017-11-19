@@ -6,7 +6,14 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-void	ft_error_msg(void);
-int		open_file(char **argv, char *buf);
+typedef struct	s_tetri
+{
+		char	block[4][5];
+		int		index;
+		t_tetri	*next;
+}				t_tetri;
+
+void			ft_error_msg(void);
+int				open_file(char **argv, char *buf);
 
 #endif
