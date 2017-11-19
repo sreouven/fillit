@@ -1,4 +1,5 @@
 # fillit
 W.I.P
 
-lit le fichier et check le format et les char
+Lit le fichier et le parse en tetrimino dans une liste chainee
+Detecte toute le erreurs eventuels
