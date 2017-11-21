@@ -43,14 +43,14 @@ int		main(int argc, char **argv)
 		}
 		if(!(buffer = ft_open_check_file(&argv[1])))
 		{
-				write(1, "buffer error\n", 13);
+				write(1, "error\n", 6);
 				return (1);
 		}
 		len_buffer = ft_strlen(buffer);
 		ptr_list = fill_list(buffer, len_buffer);
 		if(ptr_list == NULL)
 		{
-				write(1, "ptr_list error\n", 15);
+				write(1, "error\n", 6);
 				return (1);
 		}
 		fill_data(ptr_list, &data);
