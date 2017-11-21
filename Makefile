@@ -5,10 +5,14 @@ CFLAGS = -I includes/
 CC = gcc
 
 SRC_C = 	main.c \
+			open.c \
+			list.c \
+			backtrack.c \
 			ft_putstr.c \
 			ft_strcpy.c \
 			ft_putendl_fd.c \
-			ft_strlen.c
+			ft_strlen.c \
+			ft_sqrt.c
 
 INCLUDE_H = libft.h \
 			fillit.h
